@@ -38,7 +38,7 @@
                             <td>{{$item->deskripsi_produk}}</td>
                             <td>
                                 <button type="button" class="btn btn-danger">Hapus</button>
-                                <button type="button" class="btn btn-warning">Edit</button>
+                                <a href="/product/{{$item->id_produk}}/edit" class="btn btn-warning">Edit</a>
                                 <a href="/product/{{$item->id_produk}}" class="btn btn-info">Detail</a>
                             </td>
                         </tr>
