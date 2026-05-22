@@ -34,9 +34,15 @@ class ProductController extends Controller
     {
         // validasi
         $request->validate([
-            'nama_produk' => 'required',
+            'nama_produk' => 'required|min:8|max:12', // nama produk wajib diisi
             'harga_produk' => 'required',
             'deskripsi' => 'required',
+        ], [
+            'nama_produk.min' => 'nama produk minimal 8 karakter',
+            'nama_produk.max' => 'nama produk maximal 12 karakter',
+            'nama_produk.required' => 'inputan nama produk wajib diisi',
+            'harga_produk.required' => 'inputan harga produk wajib diisi',
+            'deskripsi.required' => 'inputan deskripsi produk wajib diisi',
         ]);
 
         // untuk menambahkaan dataa ke tb_produk
