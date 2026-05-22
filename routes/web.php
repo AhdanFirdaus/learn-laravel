@@ -20,4 +20,5 @@ Route::view('/contact','pages.contact');
 // satu controller banyak method
 Route::get('/product', [ProductController::class, 'index']); // read data
 
-Route::get('/product/add', [ProductController::class, 'addProduct']);
+Route::get('/product/create', [ProductController::class, 'create']); // menampilkan halaman form data
+Route::post('/product', [ProductController::class, 'store']); // untuk mengelola data yang telah dikirm dari halaman form data

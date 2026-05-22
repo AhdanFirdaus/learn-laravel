@@ -13,7 +13,7 @@ class product extends Model
     protected $primaryKey = 'id_produk';
 
     // inisialisasi data yang dapat kita isi
-    protected $fillable = ['nama_produk','harga','stok'];
+    // protected $fillable = ['nama_produk','harga','stok'];
 
     // inisialisasi data yang tidak boleh Kita isi
     protected $guarded = ['id_produk'];
