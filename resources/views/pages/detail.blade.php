@@ -32,7 +32,12 @@
 
     <!-- content -->
      <div class="container mt-3">
-        <h1>Beranda</h1>
+        <h1>Detail</h1>
+        <div class="card">
+            <div class="card-body">
+                selamat datang id ke-{{$nomer}}
+            </div>
+        </div>
      </div>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/js/bootstrap.bundle.min.js" integrity="sha384-FKyoEForCGlyvwx9Hj09JcYn3nv7wiPVlz7YYwJrWVcXK/BmnVDxM+D2scQbITxI" crossorigin="anonymous"></script>
   </body>
