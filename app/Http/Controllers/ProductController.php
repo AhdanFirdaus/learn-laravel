@@ -1,8 +1,11 @@
 <?php
 
 namespace App\Http\Controllers;
+
+use App\Models\kategori;
 use App\Models\product;
 use Illuminate\Http\Request;
+use Illuminate\Support\Str;
 use Illuminate\Support\Facades\DB;
 
 class ProductController extends Controller
@@ -23,7 +26,9 @@ class ProductController extends Controller
 
         $produk = product::when($search, function($query, $search) {
             return $query->where('nama_produk', 'like', "%{$search}%");
-        })->get();
+        })
+        ->join('tb_kategori', 'tb_produk.kategori_id', '=', 'tb_kategori.id_kategori')
+        ->get();
         return view('pages.produk.show', [
             'data_toko'=>$toko,
             'data_produk'=>$produk,
@@ -31,7 +36,10 @@ class ProductController extends Controller
     }
 
     public function create(){
-        return view('pages.produk.add');
+        $data_kategori = kategori::get();
+        return view('pages.produk.add', [
+            'data' => $data_kategori
+        ]);
     }
 
     public function store(Request $request)
@@ -41,6 +49,8 @@ class ProductController extends Controller
             'nama_produk' => 'required|min:8|max:12', // nama produk wajib diisi
             'harga_produk' => 'required',
             'deskripsi' => 'required',
+            'stok' => 'required',
+            'kategori' => 'required',
         ], [
             'nama_produk.min' => 'nama produk minimal 8 karakter',
             'nama_produk.max' => 'nama produk maximal 12 karakter',
@@ -53,10 +63,12 @@ class ProductController extends Controller
         // DB::table('tb_produk')->create([]);
         // query tambah data
         product::create([
+            'kode_produk' => Str::random(5),
             'nama_produk' => $request->nama_produk,
             'harga' => $request->harga_produk,
             'deskripsi_produk' => $request->deskripsi,
-            'kategori_id' => '1'
+            'kategori_id' => $request->kategori,
+            'stok' => $request->stok,
         ]);
 
         // setelah data berhasil di tambah, akan mengarahkan ke halaman /product dan memberikan notif berhasil menambahkan data
@@ -81,9 +93,11 @@ class ProductController extends Controller
     {
         // mengambil 1 data spesifik dari id yang di kirimkan dari parameter
         $data = product::findOrFail($id);
+        $data_kategori = kategori::get();
 
         return view('pages.produk.edit', [
             'data' => $data,
+            'kategori'=>$data_kategori
         ]);
     }
 
@@ -94,6 +108,8 @@ class ProductController extends Controller
             'nama_produk' => 'required|min:8', // nama produk wajib diisi
             'harga_produk' => 'required',
             'deskripsi' => 'required',
+            'stok' => 'required',
+            'kategori' => 'required',
         ], [
             'nama_produk.min' => 'nama produk minimal 8 karakter',
             'nama_produk.required' => 'inputan nama produk wajib diisi',
@@ -106,6 +122,8 @@ class ProductController extends Controller
             'nama_produk' => $request->nama_produk,
             'harga' => $request->harga_produk,
             'deskripsi_produk' => $request->deskripsi,
+            'kategori_id' => $request->kategori,
+            'stok' => $request->stok,
         ]);
 
         return redirect('product')->with('message', 'data berhasil di edit');

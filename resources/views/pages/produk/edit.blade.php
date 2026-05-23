@@ -26,6 +26,33 @@
                         @enderror
                     </div>
                 </div>
+                <div class="col-sm-6">
+                    <div class="mb-3">
+                        <label class="form-label">Stok</label>
+                        <input type="number" name="stok" class="form-control" value="{{$data->stok}}">
+                        @error('stok')
+                        <div id="emailHelp" class="form-text text-danger">{{ $message }}</div>
+                        @enderror
+                    </div>
+                </div>
+                <div class="col-sm-6">
+                    <div class="mb-3">
+                        <label class="form-label">Kategori</label>
+                        <select class="form-select" aria-label="Default select example" name='kategori'>
+                            <option selected>Pilih Disini</option>
+                            @foreach ($kategori as $item)
+                                @if ($item->id_kategori == $data->kategori_id)
+                                    <option value="{{ $item->id_kategori }}" selected>{{ $item->nama_kategori }}</option>
+                                @else
+                                    <option value="{{ $item->id_kategori }}">{{ $item->nama_kategori }}</option>
+                                @endif
+                            @endforeach
+                        </select>
+                        @error('kategori')
+                        <div id="emailHelp" class="form-text text-danger">{{ $message }}</div>
+                        @enderror
+                    </div>
+                </div>
                 <div class="col-12">
                     <div class="form-floating">
                         <textarea class="form-control" name="deskripsi" placeholder="Leave a comment here" style="height: 100px">{{ $data->deskripsi_produk }}</textarea>
