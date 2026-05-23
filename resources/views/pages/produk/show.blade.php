@@ -15,8 +15,17 @@
     <div class="alert alert-primary">{{ session('message') }}</div>
     @endif
     <div class="card">
-        <div class="card-header">
+        <div class="card-header d-flex justify-content-between align-items-center">
             Daftar Produk
+            <div class="d-flex gap-2">
+            @if (request()->keyword != '')
+                <a href="/product" class="btn btn-info">Reset</a>
+            @endif
+            <form class="input-group" style="width: 350px">
+                <input type="text" name="keyword" value="{{Request()->keyword}}" class="form-control" placeholder="Cari data produk">
+                <button class="btn btn-success" type="submit" id="button-addon2">Cari</button>
+            </form>
+            </div>
         </div>
         <div class="card-body">
             <table class="table table-stripped table-bordered">
@@ -30,7 +39,7 @@
                     </tr>
                 </thead>
                 <tbody>
-                    @foreach ($data_produk as $item)
+                    @forelse ($data_produk as $item)
                         <tr>
                             <th scope="row">{{$loop->iteration}}</th>
                             <td>{{$item->nama_produk}}</td>
@@ -43,8 +52,12 @@
                                 <a href="/product/{{$item->id_produk}}/edit" class="btn btn-warning">Edit</a>
                                 <a href="/product/{{$item->id_produk}}" class="btn btn-info">Detail</a>
                             </td>
+                        </tr>                        
+                    @empty
+                        <tr>
+                            <td colspan="5" class="text-center">Data yang anda cari tidak ada!!</td>
                         </tr>
-                    @endforeach
+                    @endforelse
                 </tbody>
             </table>
         </div>

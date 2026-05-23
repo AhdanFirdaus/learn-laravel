@@ -7,7 +7,7 @@ use Illuminate\Support\Facades\DB;
 
 class ProductController extends Controller
 {
-    public function index(){
+    public function index(Request $request){
         $toko = [
             'nama_toko'=>'Mzhodesign',
             'alamat'=>'Semarang, Jawa Tengah',
@@ -19,7 +19,11 @@ class ProductController extends Controller
         // $queryBuilder = DB::table('tb_produk')->get(); // query untuk mengambil semua data yang berada pada tb_produk
         // dd($queryBuilder);
 
-        $produk = product::get();
+        $search = $request->keyword;
+
+        $produk = product::when($search, function($query, $search) {
+            return $query->where('nama_produk', 'like', "%{$search}%");
+        })->get();
         return view('pages.produk.show', [
             'data_toko'=>$toko,
             'data_produk'=>$produk,
