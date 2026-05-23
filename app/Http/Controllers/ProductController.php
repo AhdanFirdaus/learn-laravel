@@ -51,13 +51,18 @@ class ProductController extends Controller
             'deskripsi' => 'required',
             'stok' => 'required',
             'kategori' => 'required',
+            'gambar' => 'required|image|mimes:jpg,png,jpeg|max:2000',
         ], [
             'nama_produk.min' => 'nama produk minimal 8 karakter',
             'nama_produk.max' => 'nama produk maximal 12 karakter',
             'nama_produk.required' => 'inputan nama produk wajib diisi',
             'harga_produk.required' => 'inputan harga produk wajib diisi',
             'deskripsi.required' => 'inputan deskripsi produk wajib diisi',
+            'gambar.mimes' => 'gambar hanya boleh dengan format jpg,png,jpeg',
         ]);
+
+        $namaFile = Str::random(5) . '.' . $request->gambar->extension();
+        $request->gambar->move(public_path('gambar_produk'), $namaFile);
 
         // untuk menambahkaan dataa ke tb_produk
         // DB::table('tb_produk')->create([]);
@@ -69,6 +74,7 @@ class ProductController extends Controller
             'deskripsi_produk' => $request->deskripsi,
             'kategori_id' => $request->kategori,
             'stok' => $request->stok,
+            'gambar' => $namaFile,
         ]);
 
         // setelah data berhasil di tambah, akan mengarahkan ke halaman /product dan memberikan notif berhasil menambahkan data
@@ -110,12 +116,21 @@ class ProductController extends Controller
             'deskripsi' => 'required',
             'stok' => 'required',
             'kategori' => 'required',
+            'gambar' => 'image|mimes:jpg,png,jpeg|max:2000',
         ], [
             'nama_produk.min' => 'nama produk minimal 8 karakter',
             'nama_produk.required' => 'inputan nama produk wajib diisi',
             'harga_produk.required' => 'inputan harga produk wajib diisi',
             'deskripsi.required' => 'inputan deskripsi produk wajib diisi',
         ]);
+
+        if($request->hasFile('gambar')){
+            $namaFile = Str::random(5).'.'.$request->gambar->extension();
+            $request->gambar->move(public_path('gambar_produk'),$namaFile);
+        }else{
+            $data_lama = Product::findOrFail($id);
+            $namaFile = $data_lama->gambar;
+        }
 
         // query untuk simpan data yang telah kita update
         product::where('id_produk', $id)->update([
@@ -124,6 +139,7 @@ class ProductController extends Controller
             'deskripsi_produk' => $request->deskripsi,
             'kategori_id' => $request->kategori,
             'stok' => $request->stok,
+            'gambar' => $namaFile,
         ]);
 
         return redirect('product')->with('message', 'data berhasil di edit');

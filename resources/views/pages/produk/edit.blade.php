@@ -4,10 +4,25 @@
 <div class="card">
     <div class="card-header">Update data produk</div>
     <div class="card-body">
-        <form action="/product/{{$data->id_produk}}" method="POST">
+        <form action="/product/{{$data->id_produk}}" method="POST" enctype="multipart/form-data">
             @method('PUT')
             @csrf
             <div class="row">
+                <div class="col-sm-6">
+                @if ($data->gambar == null)
+                    <p>Gambar Tidak ada</p>
+                @else
+                    <img src="{{asset('gambar_produk/'. $data->gambar)}}" class="img-fluid" width="300" alt="">
+                @endif
+                    <div class="mb-3">
+                        <label class="form-label">Gambar Produk</label>
+                        <input type="file" name="gambar" class="form-control" value="{{old('gambar')}}">
+                        <div class="form-text text-muted">*Isi bagian ini jika ingin mengganti gambar yang sudah ada.</div>
+                        @error('gambar')
+                        <div class="form-text text-danger">{{ $message }}</div>
+                        @enderror
+                    </div>
+                </div>
                 <div class="col-sm-6">
                     <div class="mb-3">
                         <label class="form-label">Nama Produk</label>
