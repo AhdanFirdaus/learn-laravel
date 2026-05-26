@@ -3,6 +3,7 @@
 namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\BelongsTo;
 
 class Post extends Model
 {
@@ -11,4 +12,9 @@ class Post extends Model
         'news_content',
         'author',
     ];
+
+    public function writer(): BelongsTo
+    {
+        return $this->belongsTo(User::class, 'author', 'id');
+    }
 }
